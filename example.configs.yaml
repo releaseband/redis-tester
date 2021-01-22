@@ -61,6 +61,7 @@ redis:
 test:
   iterations: 10
   expirations: 12s
+  goroutines: 10
   commands:
     set: true
     get: true

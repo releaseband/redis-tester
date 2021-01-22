@@ -12,9 +12,10 @@ type Commands struct {
 }
 
 type Test struct {
-	Iterations     int           `yaml:"iterations"`
-	SetExpirations time.Duration `yaml:"expirations"`
-	Commands       Commands      `yaml:"commands"`
+	Iterations       int           `yaml:"iterations"`
+	SetExpirations   time.Duration `yaml:"expirations"`
+	GoroutinesNumber int           `yaml:"goroutines"`
+	Commands         Commands      `yaml:"commands"`
 }
 
 func (t Test) Count() int {
@@ -23,4 +24,8 @@ func (t Test) Count() int {
 
 func (t Test) Expiration() time.Duration {
 	return t.SetExpirations
+}
+
+func (t Test) Goroutines() int {
+	return t.GoroutinesNumber
 }

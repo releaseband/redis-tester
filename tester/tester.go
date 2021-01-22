@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 
 	"github.com/releaseband/redis-tester/hooks/params"
 
@@ -42,16 +43,27 @@ func NewRedisTester(repo repository.Repository, opt options.Test) RedisTester {
 func (t RedisTester) test(testName string, callback func(ctx context.Context, i int) error) {
 	ctx := params.CtxWithName(context.Background(), testName)
 
+	wg := sync.WaitGroup{}
+	goroutines := t.opt.Goroutines()
 	count := t.opt.Count()
 
 	t.logger.Println("test name", testName)
 
-	for i := 0; i < count; i++ {
-		if err := callback(ctx, i); err != nil {
-			t.logger.Println(fmt.Errorf("iteration %d failed: %w", i, err))
-			return
-		}
+	wg.Add(goroutines)
+	for i := 0; i < goroutines; i++ {
+		go func() {
+			defer wg.Done()
+
+			for i := 0; i < count; i++ {
+				if err := callback(ctx, i); err != nil {
+					t.logger.Println(fmt.Errorf("iteration %d failed: %w", i, err))
+					return
+				}
+			}
+		}()
 	}
+
+	wg.Wait()
 }
 
 func (t RedisTester) testSet() {
@@ -124,7 +136,7 @@ func (t RedisTester) testLRange() {
 func (t RedisTester) Run() {
 	c := t.opt.Commands
 
-	t.logger.Printf("iterations: %d", t.opt.Iterations)
+	t.logger.Printf("goroutines: %d | iterations: %d", t.opt.Goroutines(), t.opt.Iterations)
 
 	if c.Set {
 		t.testSet()
