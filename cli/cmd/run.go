@@ -45,7 +45,7 @@ func Run() error {
 		return fmt.Errorf("GetConnectionInfo failed: %w", err)
 	}
 
-	fmt.Println(connections)
+	fmt.Println("connections:", connections)
 
 	return nil
 }

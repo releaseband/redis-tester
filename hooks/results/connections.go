@@ -14,7 +14,7 @@ type ConnectionsCounter struct {
 	RPush  uint64 `json:"RPush,omitempty"`
 	LTrim  uint64 `json:"LTRim,omitempty"`
 	LRange uint64 `json:"LRange,omitempty"`
-	Ping   uint32 `json:"ping"`
+	Ping   uint32 `json:"Ping"`
 }
 
 var (
