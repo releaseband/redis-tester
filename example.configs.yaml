@@ -1,0 +1,72 @@
+use_cluster: false
+general:
+  auth:
+    user: ""
+    password: ""
+  timeouts:
+    #Timeout for socket reads. If reached, commands will
+    # fail with a timeout instead of blocking. Use value -1 for no timeout
+    # and 0 for default. Default is 3 seconds.
+    read: 3s
+    # Timeout for socket writes. If reached, commands will fail
+    # with a timeout instead of blocking.
+    #  Default is ReadTimeout.
+    write: 3s
+    # Dial timeout for establishing new connections.
+    # Default is 5 seconds.
+    dial: 5s
+    # Amount of time client waits for connection if all connections
+    # are busy before returning an error.
+    # Default is ReadTimeout + 1 second.
+    pool: 4s
+    # Amount of time after which client closes idle connections.
+    # Should be less than server's timeout.
+    # Default is 5 minutes. -1 disables idle timeout check.
+    idle: 6s
+  retries:
+    # Minimum backoff between each retry.
+    # Default is 8 milliseconds; -1 disables backoff.
+    min_retry: 8ms
+    # Maximum backoff between each retry.
+    # Default is 512 milliseconds; -1 disables backoff.
+    max_retry: 512ms
+    # Maximum number of retries before giving up.
+    # Default is 3 retries; -1 (not 0) disables retries.
+    max_retries: 3
+  # Minimum number of idle connections which is useful when establishing
+  #	new connection is slow.
+  min_idle_conns: 2
+  # Maximum number of socket connections
+  # Default is 10 connections per every CPU as reported by runtime.NumCPU.
+  pool_size: 40
+  # Connection age at which client retires (closes) the connection.
+  # Default is to not close aged connections.
+  max_conn_age: 8s
+  idle_check_frequency: 9s
+
+
+cluster:
+  addresses:
+    - "localhost:6379"
+  # Enables read only queries on slave nodes.
+  read_only: true
+  max_redirects: 2
+redis:
+  #tcp or unix
+  network: "tcp"
+  address: "localhost:6379"
+  # 10 * num_cpu
+  pool_size: 40
+
+test:
+  iterations: 10
+  expirations: 12s
+  goroutines: 10
+  commands:
+    set: true
+    get: true
+    del: true
+    r_push: true
+    l_range: true
+    l_trim: true
+
