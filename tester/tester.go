@@ -51,16 +51,16 @@ func (t RedisTester) test(testName string, callback func(ctx context.Context, i 
 
 	wg.Add(goroutines)
 	for i := 0; i < goroutines; i++ {
-		go func() {
+		go func(gNumber int) {
 			defer wg.Done()
 
-			for i := 0; i < count; i++ {
-				if err := callback(ctx, i); err != nil {
-					t.logger.Println(fmt.Errorf("iteration %d failed: %w", i, err))
+			for j := 0; j < count; j++ {
+				if err := callback(ctx, j*gNumber); err != nil {
+					t.logger.Println(fmt.Errorf("iteration %d failed: %w", j, err))
 					return
 				}
 			}
-		}()
+		}(i + 1)
 	}
 
 	wg.Wait()
