@@ -13,6 +13,7 @@ const (
 	RPush  = "RPush"
 	LTrim  = "LTrim"
 	LRange = "LRange"
+	Ping   = "Ping"
 )
 
 func CtxWithName(ctx context.Context, name string) context.Context {

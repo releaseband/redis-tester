@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/releaseband/redis-tester/hooks/params"
+
 	"github.com/releaseband/redis-tester/hooks/results"
 
 	"github.com/go-redis/redis/v8"
@@ -30,7 +32,7 @@ func Run() error {
 		client = redis.NewClient(options.RedisOptions(ts.RedisSettings()))
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(params.CtxWithName(context.Background(), params.Ping), 2*time.Second)
 	defer cancel()
 
 	if err := client.Ping(ctx).Err(); err != nil {
