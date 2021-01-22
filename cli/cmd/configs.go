@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/ayupov-ayaz/redis-tester/options"
+	"github.com/releaseband/redis-tester/options"
 	"gopkg.in/yaml.v3"
 )
 

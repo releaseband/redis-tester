@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ayupov-ayaz/redis-tester/hooks/params"
+	"github.com/releaseband/redis-tester/hooks/params"
 )
 
 type ConnectionsCounter struct {

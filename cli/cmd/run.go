@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ayupov-ayaz/redis-tester/hooks/results"
+	"github.com/releaseband/redis-tester/hooks/results"
 
-	"github.com/ayupov-ayaz/redis-tester/options"
-	"github.com/ayupov-ayaz/redis-tester/repository"
-	"github.com/ayupov-ayaz/redis-tester/tester"
 	"github.com/go-redis/redis/v8"
+	"github.com/releaseband/redis-tester/options"
+	"github.com/releaseband/redis-tester/repository"
+	"github.com/releaseband/redis-tester/tester"
 )
 
 const (

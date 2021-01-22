@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/ayupov-ayaz/redis-tester/cli/cmd"
 	"log"
+
+	"github.com/releaseband/redis-tester/cli/cmd"
 )
 
 func main() {

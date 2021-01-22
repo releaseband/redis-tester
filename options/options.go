@@ -4,8 +4,8 @@ import (
 	"context"
 	"crypto/tls"
 
-	"github.com/ayupov-ayaz/redis-tester/hooks"
 	"github.com/go-redis/redis/v8"
+	"github.com/releaseband/redis-tester/hooks"
 )
 
 func ClusterOptions(opt ClusterSettings) *redis.ClusterOptions {

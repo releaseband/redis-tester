@@ -1,4 +1,4 @@
-module github.com/ayupov-ayaz/redis-tester
+module github.com/releaseband/redis-tester
 
 go 1.15
 

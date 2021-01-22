@@ -8,13 +8,13 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/ayupov-ayaz/redis-tester/hooks/params"
+	"github.com/releaseband/redis-tester/hooks/params"
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/ayupov-ayaz/redis-tester/options"
+	"github.com/releaseband/redis-tester/options"
 
-	"github.com/ayupov-ayaz/redis-tester/repository"
+	"github.com/releaseband/redis-tester/repository"
 )
 
 const (
