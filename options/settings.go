@@ -32,9 +32,11 @@ type General struct {
 }
 
 type Cluster struct {
-	Addresses    []string `yaml:"addresses"`
-	ReadOnly     bool     `yaml:"read_only"`
-	MaxRedirects int      `yaml:"max_redirects"`
+	Addresses      []string `yaml:"addresses"`
+	ReadOnly       bool     `yaml:"read_only"`
+	MaxRedirects   int      `yaml:"max_redirects"`
+	RouteRandomly  bool     `yaml:"route_randomly"`
+	RouteByLatency bool     `yaml:"route_by_latency"`
 }
 
 type Redis struct {
