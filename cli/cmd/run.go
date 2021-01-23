@@ -19,12 +19,7 @@ const (
 	configsFilePath = "./.configs.yaml"
 )
 
-func Run() error {
-	ts, err := makeTesterSettings(configsFilePath)
-	if err != nil {
-		return err
-	}
-
+func makeRedisClient(ts *options.TesterSettings) (redis.Cmdable, error) {
 	var client redis.Cmdable
 	if ts.UseCluster {
 		client = redis.NewClusterClient(options.ClusterOptions(ts.ClusterSettings()))
@@ -36,7 +31,21 @@ func Run() error {
 	defer cancel()
 
 	if err := client.Ping(ctx).Err(); err != nil {
-		return fmt.Errorf("redis ping failed: %w", err)
+		return nil, fmt.Errorf("redis ping failed: %w", err)
+	}
+
+	return client, nil
+}
+
+func Run() error {
+	ts, err := makeTesterSettings(configsFilePath)
+	if err != nil {
+		return err
+	}
+
+	client, err := makeRedisClient(ts)
+	if err != nil {
+		return fmt.Errorf("makeRedisClient failed: %w", err)
 	}
 
 	tester.NewRedisTester(repository.NewRepository(client), ts.Test).Run()
