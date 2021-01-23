@@ -16,6 +16,7 @@ type Test struct {
 	SetExpirations   time.Duration `yaml:"expirations"`
 	GoroutinesNumber int           `yaml:"goroutines"`
 	Commands         Commands      `yaml:"commands"`
+	Timeout          time.Duration `yaml:"timeout"`
 }
 
 func (t Test) Count() int {
@@ -28,4 +29,8 @@ func (t Test) Expiration() time.Duration {
 
 func (t Test) Goroutines() int {
 	return t.GoroutinesNumber
+}
+
+func (t Test) TimeOut() time.Duration {
+	return t.Timeout
 }

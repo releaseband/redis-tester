@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 
 	"github.com/releaseband/redis-tester/hooks/params"
 
@@ -51,7 +52,7 @@ func (t RedisTester) test(testName string, callback func(ctx context.Context, i 
 
 	wg.Add(goroutines)
 	for i := 0; i < goroutines; i++ {
-		go func(gNumber int) {
+		go func(gNumber int, timeOut time.Duration) {
 			defer wg.Done()
 
 			for j := 0; j < count; j++ {
@@ -59,8 +60,11 @@ func (t RedisTester) test(testName string, callback func(ctx context.Context, i 
 					t.logger.Println(fmt.Errorf("iteration %d failed: %w", j, err))
 					return
 				}
+
+				time.Sleep(timeOut)
 			}
-		}(i + 1)
+
+		}(i+1, t.opt.TimeOut())
 	}
 
 	wg.Wait()

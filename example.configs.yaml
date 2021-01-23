@@ -65,6 +65,7 @@ redis:
   pool_size: 40
 
 test:
+  timeout: 1ms
   iterations: 10
   expirations: 12s
   goroutines: 10
