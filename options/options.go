@@ -31,32 +31,8 @@ func ClusterOptions(opt ClusterSettings) *redis.ClusterOptions {
 		IdleCheckFrequency: opt.IdleCheckFrequency,
 		TLSConfig:          &tls.Config{InsecureSkipVerify: true},
 		NewClient:          nil,
-		ClusterSlots: func(ctx context.Context) ([]redis.ClusterSlot, error) {
-			slots := []redis.ClusterSlot{
-				{
-					Start: 0,
-					End:   8191,
-					Nodes: []redis.ClusterNode{{
-						Addr: ":7000", // master
-					}, {
-						Addr: ":8000", // 1st slave
-					}},
-				},
-				// Second node with 1 master and 1 slave.
-				{
-					Start: 8192,
-					End:   16383,
-					Nodes: []redis.ClusterNode{{
-						Addr: ":7001", // master
-					}, {
-						Addr: ":8001", // 1st slave
-					}},
-				},
-			}
-
-			return slots, nil
-		},
-		Dialer: nil,
+		ClusterSlots:       clusterSlots(opt.Manual),
+		Dialer:             nil,
 		OnConnect: func(ctx context.Context, cn *redis.Conn) error {
 			hooks.OnConnect(ctx)
 			return nil

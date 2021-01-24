@@ -1,4 +1,3 @@
-use_cluster: false
 general:
   auth:
     user: ""
@@ -46,6 +45,24 @@ general:
 
 
 cluster:
+  use: false
+  manual:
+    use: true
+    slots:
+      - start: 0
+        end: 8191
+        addresses:
+          # master
+          - "localhost:7001"
+          # slaves:
+          - "localhost:7002"
+      - start: 8192
+        end: 16383
+        addresses:
+          # master
+          - "localhost:8001"
+          # slaves:
+          - "localhost:8002"
   addresses:
     - "localhost:6379"
   # Enables read only queries on slave nodes.

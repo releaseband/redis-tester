@@ -31,14 +31,6 @@ type General struct {
 	IdleCheckFrequency time.Duration `yaml:"idle_check_frequency"`
 }
 
-type Cluster struct {
-	Addresses      []string `yaml:"addresses"`
-	ReadOnly       bool     `yaml:"read_only"`
-	MaxRedirects   int      `yaml:"max_redirects"`
-	RouteRandomly  bool     `yaml:"route_randomly"`
-	RouteByLatency bool     `yaml:"route_by_latency"`
-}
-
 type Redis struct {
 	Network string `yaml:"network"`
 	Address string `yaml:"address"`
@@ -55,11 +47,10 @@ type ClusterSettings struct {
 }
 
 type TesterSettings struct {
-	UseCluster bool    `yaml:"use_cluster"`
-	General    General `yaml:"general"`
-	Redis      Redis   `yaml:"redis"`
-	Cluster    Cluster `yaml:"cluster"`
-	Test       Test    `yaml:"test"`
+	General General `yaml:"general"`
+	Redis   Redis   `yaml:"redis"`
+	Cluster Cluster `yaml:"cluster"`
+	Test    Test    `yaml:"test"`
 }
 
 func (ts TesterSettings) RedisSettings() RedisSettings {
