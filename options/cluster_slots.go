@@ -2,7 +2,6 @@ package options
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -33,7 +32,6 @@ func clusterSlots(ts ManualCluster) func(ctx context.Context) ([]redis.ClusterSl
 			}
 		}
 
-		fmt.Println("debug", slots)
 		return slots, nil
 	}
 }
