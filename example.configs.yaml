@@ -45,9 +45,9 @@ general:
 
 
 cluster:
-  use: false
+  use: true
   manual:
-    use: true
+    use: false
     slots:
       - start: 0
         end: 8191
@@ -66,13 +66,13 @@ cluster:
   addresses:
     - "localhost:6379"
   # Enables read only queries on slave nodes.
-  read_only: false
+  read_only: true
   # Allows routing read-only commands to the random master or slave node.
   #	It automatically enables ReadOnly.
   route_randomly: false
   # Allows routing read-only commands to the closest master or slave node.
   #	It automatically enables ReadOnly.
-  route_by_latency: false
+  route_by_latency: true
   max_redirects: 2
 redis:
   #tcp or unix
