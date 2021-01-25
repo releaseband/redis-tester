@@ -47,13 +47,6 @@ func printResults() error {
 
 	printToConsole("connections:", connections)
 
-	operations, err := results.GetOperationsCounter()
-	if err != nil {
-		return fmt.Errorf("GetOperationsCounter failed: %w", err)
-	}
-
-	printToConsole("operations:", operations)
-
 	return nil
 }
 
