@@ -22,7 +22,10 @@ const (
 func makeRedisClient(ts *options.TesterSettings) (redis.Cmdable, error) {
 	var client redis.Cmdable
 	if ts.Cluster.Use {
-		client = redis.NewClusterClient(options.ClusterOptions(ts.ClusterSettings()))
+		cluster := redis.NewClusterClient(options.ClusterOptions(ts.ClusterSettings()))
+		cluster.ReloadState(context.Background())
+
+		client = cluster
 	} else {
 		client = redis.NewClient(options.RedisOptions(ts.RedisSettings()))
 	}
