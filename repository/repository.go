@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/releaseband/redis-tester/hooks/results"
+
 	"github.com/go-redis/redis/v8"
 )
 
@@ -18,6 +20,14 @@ func NewRepository(client *redis.ClusterClient) Repository {
 	}
 }
 
+func addWrite(client *redis.Client) {
+	results.AddWrite(client.String())
+}
+
+func addRead(client *redis.Client) {
+	results.AddRead(client.String())
+}
+
 func (r Repository) Set(ctx context.Context, key string, v interface{}, expiration time.Duration) error {
 	master, err := r.redis.MasterForKey(ctx, key)
 	if err != nil {
@@ -28,6 +38,8 @@ func (r Repository) Set(ctx context.Context, key string, v interface{}, expirati
 		return fmt.Errorf("set for %s failed: %w", key, err)
 	}
 
+	addWrite(master)
+
 	return nil
 }
 
@@ -36,6 +48,8 @@ func (r Repository) Get(ctx context.Context, key string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("get SlaveForKey failed: %w", err)
 	}
+
+	addRead(slave)
 
 	return slave.Get(ctx, key).Result()
 }
