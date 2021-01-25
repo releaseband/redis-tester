@@ -34,7 +34,7 @@ func (r Repository) Set(ctx context.Context, key string, v interface{}, expirati
 		return fmt.Errorf("get MasterForKey failed: %w", err)
 	}
 
-	fmt.Println(master.String())
+	addWrite(master)
 
 	if err := master.Set(ctx, key, v, expiration).Err(); err != nil {
 		return fmt.Errorf("set for %s failed: %w", key, err)
@@ -48,6 +48,8 @@ func (r Repository) Get(ctx context.Context, key string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("get SlaveForKey failed: %w", err)
 	}
+
+	addRead(slave)
 
 	return slave.Get(ctx, key).Result()
 }

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/releaseband/redis-tester/hooks/params"
-
 	"github.com/releaseband/redis-tester/hooks/results"
+
+	"github.com/releaseband/redis-tester/hooks/params"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/releaseband/redis-tester/options"
@@ -35,6 +35,28 @@ func makeRedisClient(ts *options.TesterSettings) (*redis.ClusterClient, error) {
 	return cluster, nil
 }
 
+func printToConsole(key, val string) {
+	fmt.Println(key, val)
+}
+
+func printResults() error {
+	connections, err := results.GetConnectionsInfo()
+	if err != nil {
+		return fmt.Errorf("GetConnectionInfo failed: %w", err)
+	}
+
+	printToConsole("connections:", connections)
+
+	operations, err := results.GetOperationsCounter()
+	if err != nil {
+		return fmt.Errorf("GetOperationsCounter failed: %w", err)
+	}
+
+	printToConsole("operations:", operations)
+
+	return nil
+}
+
 func Run() error {
 	ts, err := makeTesterSettings(configsFilePath)
 	if err != nil {
@@ -47,12 +69,6 @@ func Run() error {
 	}
 
 	tester.NewRedisTester(repository.NewRepository(client), ts.Test).Run()
-	connections, err := results.GetConnectionsInfo()
-	if err != nil {
-		return fmt.Errorf("GetConnectionInfo failed: %w", err)
-	}
 
-	fmt.Println("connections:", connections)
-
-	return nil
+	return printResults()
 }

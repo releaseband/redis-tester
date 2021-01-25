@@ -3,11 +3,13 @@ package results
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 )
 
 type addresses map[string]uint32
 
 type operationsCounter struct {
+	my    *sync.Mutex
 	Read  addresses `json:"read"`
 	Write addresses `json:"write"`
 }
@@ -21,20 +23,32 @@ func init() {
 	}
 }
 
-func AddRead(address string) {
+func (c *operationsCounter) addRead(address string) {
+	c.my.Lock()
 	if _, ok := oCounter.Read[address]; !ok {
 		oCounter.Read[address] = 0
 	}
 
 	oCounter.Read[address]++
+	c.my.Unlock()
 }
 
-func AddWrite(address string) {
+func AddRead(address string) {
+	oCounter.addRead(address)
+}
+
+func (c *operationsCounter) addWrite(address string) {
+	c.my.Lock()
 	if _, ok := oCounter.Write[address]; !ok {
 		oCounter.Write[address] = 0
 	}
 
 	oCounter.Write[address]++
+	c.my.Unlock()
+}
+
+func AddWrite(address string) {
+	oCounter.addWrite(address)
 }
 
 func GetOperationsCounter() (string, error) {
