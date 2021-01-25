@@ -91,6 +91,5 @@ test:
     get: true
     del: true
     r_push: true
-    l_range: true
     l_trim: true
 
