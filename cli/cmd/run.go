@@ -19,27 +19,20 @@ const (
 	configsFilePath = "./.configs.yaml"
 )
 
-func makeRedisClient(ts *options.TesterSettings) (redis.Cmdable, error) {
-	var client redis.Cmdable
-	if ts.Cluster.Use {
-		cluster := redis.NewClusterClient(options.ClusterOptions(ts.ClusterSettings()))
-		if ts.Cluster.Manual.Use {
-			cluster.ReloadState(context.Background())
-		}
-
-		client = cluster
-	} else {
-		client = redis.NewClient(options.RedisOptions(ts.RedisSettings()))
+func makeRedisClient(ts *options.TesterSettings) (*redis.ClusterClient, error) {
+	cluster := redis.NewClusterClient(options.ClusterOptions(ts.ClusterSettings()))
+	if ts.Cluster.Manual.Use {
+		cluster.ReloadState(context.Background())
 	}
 
 	ctx, cancel := context.WithTimeout(params.CtxWithName(context.Background(), params.Ping), 2*time.Second)
 	defer cancel()
 
-	if err := client.Ping(ctx).Err(); err != nil {
+	if err := cluster.Ping(ctx).Err(); err != nil {
 		return nil, fmt.Errorf("redis ping failed: %w", err)
 	}
 
-	return client, nil
+	return cluster, nil
 }
 
 func Run() error {

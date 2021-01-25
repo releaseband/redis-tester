@@ -9,17 +9,22 @@ import (
 )
 
 type Repository struct {
-	redis redis.Cmdable
+	redis *redis.ClusterClient
 }
 
-func NewRepository(client redis.Cmdable) Repository {
+func NewRepository(client *redis.ClusterClient) Repository {
 	return Repository{
 		redis: client,
 	}
 }
 
 func (r Repository) Set(ctx context.Context, key string, v interface{}, expiration time.Duration) error {
-	if err := r.redis.Set(ctx, key, v, expiration).Err(); err != nil {
+	master, err := r.redis.MasterForKey(ctx, key)
+	if err != nil {
+		return fmt.Errorf("get MasterForKey failed: %w", err)
+	}
+
+	if err := master.Set(ctx, key, v, expiration).Err(); err != nil {
 		return fmt.Errorf("set for %s failed: %w", key, err)
 	}
 
@@ -27,7 +32,12 @@ func (r Repository) Set(ctx context.Context, key string, v interface{}, expirati
 }
 
 func (r Repository) Get(ctx context.Context, key string) (string, error) {
-	return r.redis.Get(ctx, key).Result()
+	slave, err := r.redis.SlaveForKey(ctx, key)
+	if err != nil {
+		return "", fmt.Errorf("get SlaveForKey failed: %w", err)
+	}
+
+	return slave.Get(ctx, key).Result()
 }
 func (r Repository) Del(ctx context.Context, key string) error {
 	return r.redis.Del(ctx, key).Err()
