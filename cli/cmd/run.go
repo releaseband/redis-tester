@@ -54,12 +54,5 @@ func Run() error {
 
 	fmt.Println("connections:", connections)
 
-	operations, err := results.GetOperationsCounter()
-	if err != nil {
-		return fmt.Errorf("GetOperationsCounter failed: %w", err)
-	}
-
-	fmt.Println("operations", operations)
-
 	return nil
 }

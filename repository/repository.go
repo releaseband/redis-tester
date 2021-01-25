@@ -38,8 +38,6 @@ func (r Repository) Set(ctx context.Context, key string, v interface{}, expirati
 		return fmt.Errorf("set for %s failed: %w", key, err)
 	}
 
-	addWrite(master)
-
 	return nil
 }
 
@@ -48,8 +46,6 @@ func (r Repository) Get(ctx context.Context, key string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("get SlaveForKey failed: %w", err)
 	}
-
-	addRead(slave)
 
 	return slave.Get(ctx, key).Result()
 }
