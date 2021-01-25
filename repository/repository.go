@@ -34,6 +34,8 @@ func (r Repository) Set(ctx context.Context, key string, v interface{}, expirati
 		return fmt.Errorf("get MasterForKey failed: %w", err)
 	}
 
+	fmt.Println(master.String())
+
 	if err := master.Set(ctx, key, v, expiration).Err(); err != nil {
 		return fmt.Errorf("set for %s failed: %w", key, err)
 	}
