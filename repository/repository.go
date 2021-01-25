@@ -9,10 +9,10 @@ import (
 )
 
 type Repository struct {
-	redis *redis.ClusterClient
+	redis redis.Cmdable
 }
 
-func NewRepository(client *redis.ClusterClient) Repository {
+func NewRepository(client redis.Cmdable) Repository {
 	return Repository{
 		redis: client,
 	}
