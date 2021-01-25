@@ -9,7 +9,7 @@ import (
 type addresses map[string]uint32
 
 type operationsCounter struct {
-	my    *sync.Mutex
+	sync.Mutex
 	Read  addresses `json:"read"`
 	Write addresses `json:"write"`
 }
@@ -24,13 +24,13 @@ func init() {
 }
 
 func (c *operationsCounter) addRead(address string) {
-	c.my.Lock()
+	c.Lock()
 	if _, ok := oCounter.Read[address]; !ok {
 		oCounter.Read[address] = 0
 	}
 
 	oCounter.Read[address]++
-	c.my.Unlock()
+	c.Unlock()
 }
 
 func AddRead(address string) {
@@ -38,13 +38,13 @@ func AddRead(address string) {
 }
 
 func (c *operationsCounter) addWrite(address string) {
-	c.my.Lock()
+	c.Lock()
 	if _, ok := oCounter.Write[address]; !ok {
 		oCounter.Write[address] = 0
 	}
 
 	oCounter.Write[address]++
-	c.my.Unlock()
+	c.Unlock()
 }
 
 func AddWrite(address string) {
