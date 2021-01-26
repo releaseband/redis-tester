@@ -69,7 +69,7 @@ cluster:
   read_only: true
   # Allows routing read-only commands to the random master or slave node.
   #	It automatically enables ReadOnly.
-  route_randomly: false
+  route_randomly: true
   # Allows routing read-only commands to the closest master or slave node.
   #	It automatically enables ReadOnly.
   route_by_latency: true
@@ -91,6 +91,5 @@ test:
     get: true
     del: true
     r_push: true
-    l_range: true
     l_trim: true
 
